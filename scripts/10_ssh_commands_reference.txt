@@ -1,0 +1,40 @@
+
+AWS CLI Tunnel commands: 
+
+  More at: https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-sessions-start.html
+   
+  - To forward the Windows RDP port:
+
+     Linux or MacOS syntax:
+    
+        aws ssm start-session --target <<your_windows_instance_id>> --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["3389"],"localPortNumber":["13389"]}'
+  
+     Windows syntax:
+
+        aws ssm start-session --target <<your_windows_instance_id>> --document-name AWS-StartPortForwardingSession --parameters portNumber="3389",localPortNumber="13389" 
+
+  - To forward the Linux, first SSH into EC2 Linux host using SSM:
+
+      aws ssm start-session --target <<your_linux_instance_id>>
+
+    Once we're in the Linux host, open two TCP pipes for our tunnel. One for MySQL and another for Postgres:
+
+      nohup socat TCP-LISTEN:13306,reuseaddr,fork TCP4:<<your_onprem_mysql_simulation_ec2_host_FQDN>>:3306 &
+
+      nohup socat TCP-LISTEN:15432,reuseaddr,fork TCP4:<<your_pgsql_aurora_endpoint_here>>:5432 &
+
+      exit Linux host
+     
+    Finally, forward those redirected Linux ports (TCP pipes running), to our local machines:
+
+      Windows Syntax:
+
+        aws ssm start-session --target <<your_linux_instance_id>> --document-name AWS-StartPortForwardingSession --parameters portNumber="13306",localPortNumber="13306" 
+
+        aws ssm start-session --target <<your_linux_instance_id>> --document-name AWS-StartPortForwardingSession --parameters portNumber="15432",localPortNumber="15432" 
+
+      MacOS or Linux Syntax:
+
+        aws ssm start-session --target <<your_linux_instance_id>> --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["13306"],"localPortNumber":["13306"]}'
+
+        aws ssm start-session --target <<your_linux_instance_id>> --document-name AWS-StartPortForwardingSession --parameters '{"portNumber":["15432"],"localPortNumber":["15432"]}'
