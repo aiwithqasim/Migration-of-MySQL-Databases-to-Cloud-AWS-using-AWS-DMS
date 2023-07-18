@@ -1,5 +1,7 @@
 # Migration of MySQL Databases to Cloud AWS using AWS DMS
 
+NOTE: This project is in progress, kinldy swtich to `dev` branch & see the progress.
+
 ## Business Overview:
 
 Today's data has become a critical asset for businesses to make informed decisions and gain a
