@@ -1,0 +1,35 @@
+{
+  "TimeColumn": "ts",
+  "TimeUnit": "SECONDS",
+  "DimensionMappings": [
+    {
+      "SourceColumn": "device_id",
+      "DestinationColumn": "device_id"
+    }
+  ],
+  "MultiMeasureMappings": {
+    "MultiMeasureAttributeMappings": [
+      {
+        "SourceColumn": "latitude",
+        "TargetMultiMeasureAttributeName": "latitude",
+        "MeasureValueType": "DOUBLE"
+      },
+      {
+        "SourceColumn": "longitude",
+        "TargetMultiMeasureAttributeName": "longitude",
+        "MeasureValueType": "DOUBLE"
+      },
+      {
+        "SourceColumn": "motion_detected",
+        "TargetMultiMeasureAttributeName": "motion_detected",
+        "MeasureValueType": "BIGINT"
+      },
+      {
+        "SourceColumn": "device_status",
+        "TargetMultiMeasureAttributeName": "device_status",
+        "MeasureValueType": "VARCHAR"
+      }
+    ]
+  },
+  "MeasureNameColumn": "measure_name"
+}

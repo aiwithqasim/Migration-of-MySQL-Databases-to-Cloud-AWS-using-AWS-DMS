@@ -1,0 +1,50 @@
+Steps:
+
+- Modify MariaDB Config File:
+
+  Start Linux Bastion EC2 host 
+
+  Connect to bastion:
+
+    aws ssm start-session --target i-00f4257e64043e50e
+
+  Backup and edit MariaDB server param file:
+
+    sudo cp /etc/my.cnf /etc/my.cnf.20230309.bak
+
+    sudo vi /etc/my.cnf
+
+    [mysqld]
+
+# DMS Parameters
+server_id=1
+log-bin
+binlog_format=ROW
+expire_logs_days=7
+binlog_checksum=NONE
+log_slave_updates=TRUE
+
+  Restart for changes:
+
+    sudo systemctl stop mariadb
+    sudo systemctl start mariadb
+
+  Confirm all good:
+
+    sudo cat /var/log/mariadb/mariadb.log
+
+Mapping example for DMS Task:
+
+
+  {
+    "rule-type": "transformation",
+    "rule-id": "3",
+    "rule-name": "3",
+    "rule-action": "rename",
+    "rule-target": "table",
+    "object-locator": {
+      "schema-name": "db_iot_smart_buildings",
+      "table-name": "tbl_smart_motion_model_x"
+    },
+    "value": "tbl_migv1_tbl_smart_motion_model_x"
+  }

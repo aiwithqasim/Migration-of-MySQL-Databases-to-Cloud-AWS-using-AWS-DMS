@@ -82,4 +82,4 @@ Manager, AWS RDS, AWS Athena, Aurora Postgres, QuickSight, AWS SSM, Apache Spark
 
 ## Architecture Diagram
 
-- To be released soon
+- ![architecture](./architecture.pngarchitecture.png)
